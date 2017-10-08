@@ -1,6 +1,10 @@
 # folder
 bin/
 target/
+.settings/
+
+# etc
+.classpath
 
 # Compiled class file
 *.class
