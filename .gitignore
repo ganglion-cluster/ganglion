@@ -1,8 +1,6 @@
 # folder
-bin/*
-target/*
-bin
-target
+bin/
+target/
 
 # Compiled class file
 *.class
