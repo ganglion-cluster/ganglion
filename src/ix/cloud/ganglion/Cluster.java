@@ -44,7 +44,7 @@ public class Cluster implements Runnable, Handler {
 	@Override
 	public void run() {
 		
-		List<Cell> unresponsive = new ArrayList<>();
+		List<Cell> unresponsive = Collections.synchronizedList(new ArrayList<>());
 				
 		while (true) {
 			
@@ -53,10 +53,10 @@ public class Cluster implements Runnable, Handler {
 			log.debug("yield...");
 			
 			// yield for existence
-			for (Cell cell : cells.keySet()) {
+			Cluster.getInstance().getCells().parallelStream().forEach(cell -> {
 				outgoing.impulse(new Signal(Host.getInstance(), cell, new Date().getTime(), channel(), SELF_EXISTENCE));
 				if (cells.get(cell) < limit) unresponsive.add(cell);
-			}
+			});
 			
 			// clean up unresponsive
 			for (Cell cell : unresponsive) {

@@ -95,12 +95,9 @@ public class Queue<T> implements Runnable, Handler{
 		
 		while (true) {
 			
-			if (outgoing.size() > 0) {
-				
+			if (outgoing.size() > 0) 
 				Cluster.getInstance().getCells().parallelStream().forEach(cell -> Outgoing.getInstance().impulse(new Signal(Host.getInstance(), cell, new Date().getTime(), channel, OFFERING)));
 		
-			}
-			
 			Motion.pause(100);
 			
 		}
