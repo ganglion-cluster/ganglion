@@ -43,7 +43,10 @@ public class Queue<T> implements Runnable, Handler{
 			
 			waitIncoming = null;
 			log.info("execute queue");
-			return incoming.get(0);
+			
+			T data = incoming.get(0);
+			incoming.remove(data);
+			return data;
 			
 		}
 		
@@ -93,9 +96,9 @@ public class Queue<T> implements Runnable, Handler{
 		while (true) {
 			
 			if (outgoing.size() > 0) {
-				for (Cell cell : Cluster.getInstance().getCells()) {
-					Outgoing.getInstance().impulse(new Signal(Host.getInstance(), cell, new Date().getTime(), channel, OFFERING));
-				}
+				
+				Cluster.getInstance().getCells().parallelStream().forEach(cell -> Outgoing.getInstance().impulse(new Signal(Host.getInstance(), cell, new Date().getTime(), channel, OFFERING)));
+		
 			}
 			
 			Motion.pause(100);
